@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This file lists what can be copied from the current SMS as reference material and what must be rewritten for the standalone CBT.
+This file lists what can be learned from the current SMS and what must be rewritten for the standalone CBT.
 
-The copied files should initially live under `_reference/sms-cbt/` and should not be treated as production-ready code.
+The standalone app no longer keeps copied SMS files under `_reference/sms-cbt/`. The SMS repo can remain available beside this project as reference only.
 
-## Copy As Reference
+## Consult As Reference
 
 ### Backend Models
 
@@ -81,11 +81,20 @@ The copied files should initially live under `_reference/sms-cbt/` and should no
 
 ## First Porting Strategy
 
-1. Copy reference files into `_reference/sms-cbt/`.
+1. Keep the SMS repo available as external reference only.
 2. Build fresh standalone models and migrations from the improved schema.
 3. Port only useful validation and UI ideas.
 4. Add tests for each SMS defect before implementing the new behavior.
-5. Keep the SMS repo available as reference until the standalone CBT has equivalent workflows.
+5. Do not introduce runtime dependencies on SMS code, tenancy, mobile APIs, AI, billing, or messaging modules.
+
+## Current Extraction Status
+
+- Standalone schema has been implemented instead of copying SMS CBT tables.
+- Secure attempt payloads have been implemented and tested.
+- Score denominator and essay/manual grading defects have been covered by tests.
+- Immutable exam revisions and attempt snapshots have been implemented.
+- Question-bank management has been rebuilt with draft, ready, retired, and version-safe editing behavior.
+- The next gap is staff exam draft authoring and approval UI.
 
 ## First Production-Quality Tests
 

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Staff\ExamDraftController;
 use App\Http\Controllers\Staff\ExamPublishController;
 use App\Http\Controllers\Staff\GradingController;
 use App\Http\Controllers\Staff\InvigilationController;
+use App\Http\Controllers\Staff\QuestionBankController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -62,6 +64,32 @@ Route::middleware(['auth', 'permission:exams.publish'])->group(function () {
     Route::post('/staff/exams/{exam}/publish', [ExamPublishController::class, 'publish'])->name('staff.exams.publish');
 });
 
+Route::middleware(['auth', 'permission:exams.view'])->group(function () {
+    Route::get('/staff/exams', [ExamDraftController::class, 'index'])->name('staff.exams.index');
+    Route::get('/staff/exams/{exam}/edit', [ExamDraftController::class, 'edit'])->name('staff.exams.edit');
+});
+
+Route::middleware(['auth', 'permission:exams.create'])->group(function () {
+    Route::get('/staff/exams/create', [ExamDraftController::class, 'create'])->name('staff.exams.create');
+    Route::post('/staff/exams', [ExamDraftController::class, 'store'])->name('staff.exams.store');
+});
+
+Route::middleware(['auth', 'permission:exams.update'])->group(function () {
+    Route::put('/staff/exams/{exam}', [ExamDraftController::class, 'update'])->name('staff.exams.update');
+});
+
+Route::middleware(['auth', 'permission:exams.submit'])->group(function () {
+    Route::post('/staff/exams/{exam}/submit', [ExamDraftController::class, 'submit'])->name('staff.exams.submit');
+});
+
+Route::middleware(['auth', 'permission:exams.approve'])->group(function () {
+    Route::post('/staff/exams/{exam}/approve', [ExamDraftController::class, 'approve'])->name('staff.exams.approve');
+});
+
+Route::middleware(['auth', 'permission:exams.publish'])->group(function () {
+    Route::post('/staff/exams/{exam}/draft-publish', [ExamDraftController::class, 'publish'])->name('staff.exams.draft_publish');
+});
+
 Route::middleware(['auth', 'permission:grades.grade'])->group(function () {
     Route::post('/staff/answers/{answer}/grade', [GradingController::class, 'grade'])->name('staff.answers.grade');
 });
@@ -77,6 +105,25 @@ Route::middleware(['auth', 'permission:results.release'])->group(function () {
 Route::middleware(['auth', 'permission:attempts.invigilate'])->group(function () {
     Route::get('/staff/exams/{exam}/invigilation', [InvigilationController::class, 'show'])->name('staff.exams.invigilation');
     Route::get('/staff/exams/{exam}/invigilation/status', [InvigilationController::class, 'status'])->name('staff.exams.invigilation.status');
+});
+
+Route::middleware(['auth', 'permission:questions.view'])->group(function () {
+    Route::get('/staff/questions', [QuestionBankController::class, 'index'])->name('staff.questions.index');
+    Route::get('/staff/questions/{question}/edit', [QuestionBankController::class, 'edit'])->name('staff.questions.edit');
+});
+
+Route::middleware(['auth', 'permission:questions.create'])->group(function () {
+    Route::get('/staff/questions/create', [QuestionBankController::class, 'create'])->name('staff.questions.create');
+    Route::post('/staff/questions', [QuestionBankController::class, 'store'])->name('staff.questions.store');
+});
+
+Route::middleware(['auth', 'permission:questions.update'])->group(function () {
+    Route::put('/staff/questions/{question}', [QuestionBankController::class, 'update'])->name('staff.questions.update');
+});
+
+Route::middleware(['auth', 'permission:questions.review'])->group(function () {
+    Route::post('/staff/questions/{question}/ready', [QuestionBankController::class, 'markReady'])->name('staff.questions.ready');
+    Route::post('/staff/questions/{question}/retire', [QuestionBankController::class, 'retire'])->name('staff.questions.retire');
 });
 
 require __DIR__.'/auth.php';

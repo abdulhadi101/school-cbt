@@ -8,6 +8,8 @@ Build a lightweight, standalone CBT application for a single school. The pilot t
 
 Version one should include only the features required to reliably prepare, deliver, grade, and report school CA tests and exams.
 
+Current implementation status is tracked in `project-status.md`.
+
 ### Include In Version One
 
 - Local school setup
@@ -214,11 +216,14 @@ Deployment requirements:
 2. Configure `.env` with the database credentials.
 3. Run `php artisan migrate --seed`.
 4. Run `php artisan school:setup --name="Pilot School" --admin-email="admin@school.test"`.
-5. Import the roster with `php artisan roster:import path/to/students.csv --create-users`.
-6. Change generated/default passwords before live exams.
-7. Create a manual backup with `php artisan backup:create`.
-8. Restore a verified backup with `php artisan backup:restore backups/YYYY-MM-DD_HHMMSS-ID/manifest.json` after migrating the target schema.
-9. Verify deployment health with `php artisan health:check` or `/health`.
+5. Optionally generate a starter CSV with `php artisan school:setup --sample-roster`.
+6. Import the roster with `php artisan roster:import path/to/students.csv --create-users`.
+7. Change generated/default passwords before live exams.
+8. Create a manual backup with `php artisan backup:create`.
+9. Restore a verified backup with `php artisan backup:restore backups/YYYY-MM-DD_HHMMSS-ID/manifest.json` after migrating the target schema.
+10. Verify deployment health with `php artisan health:check` or `/health`.
+
+`school:setup` seeds a usable pilot catalog: roles and permissions, the current session and terms, JSS 1 to SS 3, A to C arms for each class, common secondary-school subjects, default question categories, and starter staff accounts for administration, publishing, authoring, invigilation, and grading.
 
 Roster CSV columns:
 
@@ -226,6 +231,33 @@ Roster CSV columns:
 - Optional: `middle_name`, `email`, `username`, `class_level`, `section`, `academic_session`, `status`
 
 For the pilot, CSV import is enough. XLSX import can be added later after the core screens are stable.
+
+## Completed Work
+
+- Standalone Laravel/Vue app foundation.
+- Role and permission registry.
+- Pilot school setup command.
+- CSV roster import.
+- Secure CBT kernel services.
+- Immutable exam revision publishing.
+- Attempt snapshots.
+- Timed attempts, autosave, resume, submission, and expiry.
+- Objective and manual grading flows.
+- Result release filtering.
+- Student attempt-taking page.
+- Staff invigilation dashboard.
+- Local backup and restore commands.
+- Health check command and `/health` endpoint.
+- Staff question-bank creation, review, versioning, and retirement workflow.
+- Staff exam draft creation, review, approval, and publication workflow.
+
+## Next Roadmap
+
+1. Exam scheduling and audience assignment.
+2. Staff grading queue and result-release UI.
+3. Result exports.
+4. Audit log viewer.
+5. Deployment documentation for LAN production setup.
 
 ## First Milestone
 
@@ -239,4 +271,4 @@ The first milestone is not a full CBT UI. It is a secure exam kernel:
 - result-release filtering
 - audit logging
 
-Once this kernel is correct, the UI can be copied/adapted safely from the SMS.
+This milestone is now mostly complete, and the staff workflow from question creation to exam draft publishing is in place. The next milestone is scheduled delivery to eligible students.

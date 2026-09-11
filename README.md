@@ -26,6 +26,7 @@ The project is being extracted from the existing SMS CBT module, but it will be 
 
 - Local users, students, staff, classes, sections, subjects, sessions, and terms
 - Independent question bank
+- Staff question creation and review workflow
 - Immutable exam revisions
 - Attempt snapshots
 - Timed attempts
@@ -39,12 +40,14 @@ The project is being extracted from the existing SMS CBT module, but it will be 
 
 ## Documentation
 
+- `docs/README.md`
 - `docs/standalone-cbt-plan.md`
+- `docs/project-status.md`
 - `docs/extraction-checklist.md`
 
 ## Development Status
 
-Fresh Laravel application created. The CBT kernel is being rebuilt directly in this standalone project without retaining copied SMS reference files.
+Standalone foundation, secure CBT kernel, deployment tooling, pilot setup, roster import, and question-bank management are in place. See `docs/project-status.md` for current progress and next steps.
 
 ## Pilot Setup
 
@@ -56,6 +59,25 @@ php artisan school:setup --name="Pilot School" --admin-email="admin@school.test"
 ```
 
 If `--admin-password` is omitted, the command prints a generated password.
+
+`school:setup` is idempotent and creates:
+
+- roles and permissions
+- the current academic session and three terms
+- JSS 1 to SS 3 class levels with A, B, and C arms
+- a starter subject catalog
+- admin, exam officer, question author, invigilator, and grader accounts
+- default question categories for each subject and class level
+
+Starter staff accounts use `--staff-password`, which defaults to `staff12345`. Change it before live exams.
+
+Generate a sample roster CSV:
+
+```bash
+php artisan school:setup --sample-roster
+```
+
+The sample is written to `storage/app/private/rosters/sample-students.csv` on the local disk.
 
 Import students from CSV:
 
