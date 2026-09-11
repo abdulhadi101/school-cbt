@@ -216,6 +216,9 @@ Deployment requirements:
 4. Run `php artisan school:setup --name="Pilot School" --admin-email="admin@school.test"`.
 5. Import the roster with `php artisan roster:import path/to/students.csv --create-users`.
 6. Change generated/default passwords before live exams.
+7. Create a manual backup with `php artisan backup:create`.
+8. Restore a verified backup with `php artisan backup:restore backups/YYYY-MM-DD_HHMMSS-ID/manifest.json` after migrating the target schema.
+9. Verify deployment health with `php artisan health:check` or `/health`.
 
 Roster CSV columns:
 

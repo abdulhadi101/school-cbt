@@ -78,3 +78,23 @@ Optional CSV columns:
 - `section`
 - `academic_session`
 - `status`
+
+Create a manual local backup:
+
+```bash
+php artisan backup:create
+```
+
+Restore a verified backup after migrating the target database schema:
+
+```bash
+php artisan backup:restore backups/YYYY-MM-DD_HHMMSS-ID/manifest.json
+```
+
+Check deployment health:
+
+```bash
+php artisan health:check
+```
+
+The same report is available at `/health` for browser or LAN monitoring checks.

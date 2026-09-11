@@ -1,13 +1,21 @@
 <?php
 
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Staff\ExamPublishController;
 use App\Http\Controllers\Staff\GradingController;
 use App\Http\Controllers\Staff\InvigilationController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
+use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -18,6 +26,18 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/health', HealthController::class)
+    ->withoutMiddleware([
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        PreventRequestForgery::class,
+        HandleInertiaRequests::class,
+        AddLinkHeadersForPreloadedAssets::class,
+    ])
+    ->name('health');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
