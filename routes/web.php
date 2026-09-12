@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Staff\ExamDraftController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Staff\ExamScheduleController;
 use App\Http\Controllers\Staff\GradingController;
 use App\Http\Controllers\Staff\InvigilationController;
 use App\Http\Controllers\Staff\QuestionBankController;
+use App\Http\Controllers\Staff\ResultReleaseController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
 use App\Http\Controllers\Student\ExamListController;
@@ -43,9 +45,9 @@ Route::get('/health', HealthController::class)
     ])
     ->name('health');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -104,6 +106,9 @@ Route::middleware(['auth', 'permission:grades.view'])->group(function () {
 });
 
 Route::middleware(['auth', 'permission:results.release'])->group(function () {
+    Route::get('/staff/results/{exam}', [ResultReleaseController::class, 'show'])->name('staff.results.show');
+    Route::post('/staff/results/{exam}/release', [ResultReleaseController::class, 'release'])->name('staff.results.release');
+    Route::post('/staff/results/{exam}/release-all', [ResultReleaseController::class, 'releaseAll'])->name('staff.results.release-all');
     Route::post('/staff/attempts/{attempt}/release', [GradingController::class, 'release'])->name('staff.attempts.release');
 });
 
