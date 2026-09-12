@@ -4,11 +4,13 @@ use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Staff\ExamDraftController;
 use App\Http\Controllers\Staff\ExamPublishController;
+use App\Http\Controllers\Staff\ExamScheduleController;
 use App\Http\Controllers\Staff\GradingController;
 use App\Http\Controllers\Staff\InvigilationController;
 use App\Http\Controllers\Staff\QuestionBankController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
+use App\Http\Controllers\Student\ExamListController;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -52,6 +54,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'permission:attempts.take'])->group(function () {
+    Route::get('/student/exams', ExamListController::class)->name('student.exams.index');
     Route::post('/attempts/start', [AttemptController::class, 'start'])->name('attempts.start');
     Route::get('/attempts/{attempt}/take', [AttemptPageController::class, 'show'])->name('attempts.take');
     Route::post('/attempts/{attempt}/answers', [AttemptController::class, 'saveAnswer'])->name('attempts.answers');
@@ -67,6 +70,7 @@ Route::middleware(['auth', 'permission:exams.publish'])->group(function () {
 Route::middleware(['auth', 'permission:exams.view'])->group(function () {
     Route::get('/staff/exams', [ExamDraftController::class, 'index'])->name('staff.exams.index');
     Route::get('/staff/exams/{exam}/edit', [ExamDraftController::class, 'edit'])->name('staff.exams.edit');
+    Route::get('/staff/exams/{exam}/schedule', [ExamScheduleController::class, 'edit'])->name('staff.exams.schedule.edit');
 });
 
 Route::middleware(['auth', 'permission:exams.create'])->group(function () {
@@ -76,6 +80,7 @@ Route::middleware(['auth', 'permission:exams.create'])->group(function () {
 
 Route::middleware(['auth', 'permission:exams.update'])->group(function () {
     Route::put('/staff/exams/{exam}', [ExamDraftController::class, 'update'])->name('staff.exams.update');
+    Route::put('/staff/exams/{exam}/schedule', [ExamScheduleController::class, 'update'])->name('staff.exams.schedule.update');
 });
 
 Route::middleware(['auth', 'permission:exams.submit'])->group(function () {

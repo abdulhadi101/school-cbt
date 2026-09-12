@@ -151,7 +151,10 @@ function publish() {
                     <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ exam ? 'Edit Exam Draft' : 'New Exam Draft' }}</h2>
                     <p class="text-sm text-gray-500">Configure exam settings and lock ready question versions into draft slots.</p>
                 </div>
-                <Link :href="route('staff.exams.index')" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Back to exams</Link>
+                <div class="flex gap-3">
+                    <Link v-if="exam" :href="route('staff.exams.schedule.edit', exam.id)" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Schedule</Link>
+                    <Link :href="route('staff.exams.index')" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Back to exams</Link>
+                </div>
             </div>
         </template>
 

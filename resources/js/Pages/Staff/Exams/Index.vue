@@ -65,6 +65,7 @@ defineProps<{
                                 </td>
                                 <td class="px-4 py-3 text-right text-sm">
                                     <Link :href="route('staff.exams.edit', exam.id)" class="font-semibold text-slate-700 hover:text-slate-950">Open</Link>
+                                    <Link :href="route('staff.exams.schedule.edit', exam.id)" class="ml-4 font-semibold text-slate-700 hover:text-slate-950">Schedule</Link>
                                 </td>
                             </tr>
                             <tr v-if="exams.data.length === 0">

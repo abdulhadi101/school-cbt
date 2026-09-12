@@ -10,17 +10,20 @@ use App\Models\Exam;
 use App\Models\ExamSlot;
 use App\Models\QuestionVersion;
 use App\Models\Student;
+use App\Services\Exams\ExamEligibility;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class AttemptStarter
 {
+    public function __construct(private ExamEligibility $eligibility) {}
+
     public function startOrResume(Exam $exam, Student $student): Attempt
     {
-        return DB::transaction(function () use ($exam, $student) {
+        return DB::connection()->transaction(function () use ($exam, $student): Attempt {
             $exam = Exam::query()
-                ->with(['latestRevision.slots.questionVersion.options', 'latestRevision.slots.questionCategory'])
+                ->with(['latestRevision.slots.questionVersion.options', 'latestRevision.slots.questionCategory', 'audiences', 'accommodations'])
                 ->lockForUpdate()
                 ->findOrFail($exam->id);
 
@@ -46,6 +49,10 @@ class AttemptStarter
                 return $activeAttempt->load('questions');
             }
 
+            if ($reason = $this->eligibility->reason($exam, $student)) {
+                throw new RuntimeException($reason);
+            }
+
             $latestRevision = $exam->latestRevision;
 
             if (! $latestRevision) {
@@ -57,11 +64,8 @@ class AttemptStarter
                 ->where('student_id', $student->id)
                 ->count();
 
-            if ($attemptCount >= $exam->max_attempts) {
-                throw new RuntimeException('The maximum number of attempts has been reached.');
-            }
-
             $seed = random_int(1, PHP_INT_MAX);
+            $durationMinutes = (int) $exam->duration_minutes + $this->eligibility->extraMinutes($exam, $student);
 
             $attempt = Attempt::query()->create([
                 'exam_id' => $exam->id,
@@ -70,7 +74,7 @@ class AttemptStarter
                 'attempt_number' => $attemptCount + 1,
                 'status' => AttemptStatus::InProgress,
                 'started_at' => now(),
-                'deadline_at' => now()->addMinutes($exam->duration_minutes),
+                'deadline_at' => now()->addMinutes($durationMinutes),
                 'max_score' => $latestRevision->total_marks,
                 'seed' => $seed,
                 'ip_address' => request()?->ip(),
