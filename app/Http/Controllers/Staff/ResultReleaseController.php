@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attempt;
 use App\Models\Exam;
 use App\Services\Results\AttemptReleaser;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResultReleaseController extends Controller
 {
@@ -84,5 +86,54 @@ class ResultReleaseController extends Controller
         return response()->json([
             'released_count' => $count,
         ]);
+    }
+
+    public function export(Exam $exam): StreamedResponse
+    {
+        $filename = 'results-'.str($exam->title)->slug()->append('.csv');
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        return response()->stream(function () use ($exam) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'Admission Number',
+                'First Name',
+                'Last Name',
+                'Attempt',
+                'Status',
+                'Score',
+                'Max Score',
+                'Percentage',
+                'Submitted At',
+                'Graded At',
+                'Released At',
+            ]);
+
+            $exam->attempts()
+                ->with('student:id,first_name,last_name,admission_number')
+                ->orderBy('id')
+                ->each(function (Attempt $attempt) use ($handle) {
+                    fputcsv($handle, [
+                        $attempt->student?->admission_number,
+                        $attempt->student?->first_name,
+                        $attempt->student?->last_name,
+                        $attempt->attempt_number,
+                        $attempt->status->value,
+                        $attempt->score,
+                        $attempt->max_score,
+                        $attempt->percentage,
+                        $attempt->submitted_at?->format('Y-m-d H:i:s'),
+                        $attempt->graded_at?->format('Y-m-d H:i:s'),
+                        $attempt->released_at?->format('Y-m-d H:i:s'),
+                    ]);
+                });
+
+            fclose($handle);
+        }, 200, $headers);
     }
 }

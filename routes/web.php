@@ -99,6 +99,9 @@ Route::middleware(['auth', 'permission:exams.publish'])->group(function () {
 
 Route::middleware(['auth', 'permission:grades.grade'])->group(function () {
     Route::post('/staff/answers/{answer}/grade', [GradingController::class, 'grade'])->name('staff.answers.grade');
+    Route::get('/staff/grading', [GradingController::class, 'index'])->name('staff.grading.index');
+    Route::get('/staff/grading/{exam}', [GradingController::class, 'gradePage'])->name('staff.grading.exam');
+    Route::get('/staff/grading/attempts/{attempt}', [GradingController::class, 'attempt'])->name('staff.grading.attempt');
 });
 
 Route::middleware(['auth', 'permission:grades.view'])->group(function () {
@@ -110,6 +113,7 @@ Route::middleware(['auth', 'permission:results.release'])->group(function () {
     Route::post('/staff/results/{exam}/release', [ResultReleaseController::class, 'release'])->name('staff.results.release');
     Route::post('/staff/results/{exam}/release-all', [ResultReleaseController::class, 'releaseAll'])->name('staff.results.release-all');
     Route::post('/staff/attempts/{attempt}/release', [GradingController::class, 'release'])->name('staff.attempts.release');
+    Route::get('/staff/results/{exam}/export', [ResultReleaseController::class, 'export'])->name('staff.results.export');
 });
 
 Route::middleware(['auth', 'permission:attempts.invigilate'])->group(function () {

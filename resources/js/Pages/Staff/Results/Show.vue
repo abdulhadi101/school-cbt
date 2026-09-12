@@ -121,6 +121,7 @@ function formatDate(date: string | null): string {
                 </div>
                 <div class="flex gap-2">
                     <Link :href="route('staff.exams.index')" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Back to Exams</Link>
+                    <a :href="route('staff.results.export', exam.id)" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Export CSV</a>
                     <button v-if="summary.graded > 0" :disabled="releasingAll" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50" @click="releaseAllGraded">
                         {{ releasingAll ? 'Releasing...' : `Release All Graded (${summary.graded})` }}
                     </button>
