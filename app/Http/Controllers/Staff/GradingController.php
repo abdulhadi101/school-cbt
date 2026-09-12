@@ -12,6 +12,7 @@ use App\Models\Exam;
 use App\Services\Grading\ManualGrader;
 use App\Services\Results\AttemptReleaser;
 use App\Services\Results\AttemptResultPresenter;
+use App\Support\Audit\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -112,6 +113,12 @@ class GradingController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
+        AuditLogger::log(
+            action: 'answer.graded',
+            model: $answer,
+            newValues: ['score' => $data['score'], 'feedback' => $data['feedback'] ?? null],
+        );
+
         return response()->json([
             'attempt_answer_id' => $graded->id,
             'grading_status' => $graded->grading_status->value,
@@ -131,6 +138,12 @@ class GradingController extends Controller
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
+
+        AuditLogger::log(
+            action: 'attempt.released',
+            model: $attempt,
+            newValues: ['status' => $released->status->value],
+        );
 
         return response()->json([
             'attempt_id' => $released->id,

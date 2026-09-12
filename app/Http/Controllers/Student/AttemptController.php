@@ -12,6 +12,7 @@ use App\Services\Attempts\AnswerAutosaver;
 use App\Services\Attempts\AttemptStarter;
 use App\Services\Attempts\AttemptSubmitter;
 use App\Services\Results\AttemptResultPresenter;
+use App\Support\Audit\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 
@@ -35,6 +36,12 @@ class AttemptController extends Controller
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
+
+        AuditLogger::log(
+            action: 'attempt.started',
+            model: $attempt,
+            newValues: ['exam_id' => $exam->id],
+        );
 
         return response()->json($presenter->presentForStudent($attempt->fresh()));
     }
@@ -81,6 +88,12 @@ class AttemptController extends Controller
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
+
+        AuditLogger::log(
+            action: 'attempt.submitted',
+            model: $attempt,
+            newValues: ['status' => $submitted->status->value],
+        );
 
         return response()->json($presenter->presentForStudent($submitted->fresh()));
     }

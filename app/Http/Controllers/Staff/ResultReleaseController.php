@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\Exam;
 use App\Services\Results\AttemptReleaser;
+use App\Support\Audit\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -68,6 +69,12 @@ class ResultReleaseController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
+        AuditLogger::log(
+            action: 'attempt.released',
+            model: $attempt,
+            newValues: ['status' => $released->status->value],
+        );
+
         return response()->json([
             'attempt_id' => $released->id,
             'status' => $released->status->value,
@@ -82,6 +89,12 @@ class ResultReleaseController extends Controller
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
+
+        AuditLogger::log(
+            action: 'exam.results_released',
+            model: $exam,
+            newValues: ['released_count' => $count],
+        );
 
         return response()->json([
             'released_count' => $count,
