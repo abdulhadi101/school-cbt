@@ -7,6 +7,7 @@ use App\Enums\ExamStatus;
 use App\Models\Attempt;
 use App\Models\Exam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -26,22 +27,15 @@ class DashboardController extends Controller
 
     private function staffDashboard(): Response
     {
-        $publishedExamCount = Exam::query()
-            ->where('status', ExamStatus::Published)
-            ->count();
-
-        $totalAttempts = Attempt::query()->count();
-
-        $pendingGrading = Attempt::query()
-            ->whereIn('status', [AttemptStatus::Submitted, AttemptStatus::Grading])
-            ->count();
-
-        $releasedCount = Attempt::query()
-            ->where('status', AttemptStatus::Released)
-            ->count();
+        $stats = Cache::remember('dashboard:staff:stats', 60, fn () => [
+            'published_exams' => Exam::query()->where('status', ExamStatus::Published)->count(),
+            'total_attempts' => Attempt::query()->count(),
+            'pending_grading' => Attempt::query()->whereIn('status', [AttemptStatus::Submitted, AttemptStatus::Grading])->count(),
+            'released_results' => Attempt::query()->where('status', AttemptStatus::Released)->count(),
+        ]);
 
         $recentAttempts = Attempt::query()
-            ->with('exam:id,title,subject_id', 'student:id,first_name,last_name,admission_number')
+            ->with('exam:id,title', 'student:id,first_name,last_name,admission_number')
             ->latest()
             ->limit(10)
             ->get()
@@ -58,7 +52,7 @@ class DashboardController extends Controller
         $examsNeedingGrading = Exam::query()
             ->whereHas('attempts', fn ($q) => $q->whereIn('status', [AttemptStatus::Submitted, AttemptStatus::Grading]))
             ->withCount(['attempts as pending_count' => fn ($q) => $q->whereIn('status', [AttemptStatus::Submitted, AttemptStatus::Grading])])
-            ->withCount(['attempts as total_count'])
+            ->withCount('attempts as total_count')
             ->orderByDesc('pending_count')
             ->limit(5)
             ->get()
@@ -70,12 +64,7 @@ class DashboardController extends Controller
             ]);
 
         return Inertia::render('Dashboard', [
-            'stats' => [
-                'published_exams' => $publishedExamCount,
-                'total_attempts' => $totalAttempts,
-                'pending_grading' => $pendingGrading,
-                'released_results' => $releasedCount,
-            ],
+            'stats' => $stats,
             'recentAttempts' => $recentAttempts,
             'examsNeedingGrading' => $examsNeedingGrading,
         ]);
@@ -85,28 +74,20 @@ class DashboardController extends Controller
     {
         $student = $user->student;
 
-        $totalAttempts = $student
-            ? Attempt::where('student_id', $student->id)->count()
-            : 0;
-
-        $releasedResults = $student
-            ? Attempt::where('student_id', $student->id)
-                ->where('status', AttemptStatus::Released)
-                ->count()
-            : 0;
-
-        $averageScore = $student
-            ? (float) Attempt::where('student_id', $student->id)
-                ->where('status', AttemptStatus::Released)
-                ->avg('percentage')
-            : 0;
+        $stats = $student
+            ? Cache::remember("dashboard:student:{$student->id}:stats", 60, fn () => [
+                'total_attempts' => Attempt::where('student_id', $student->id)->count(),
+                'released_results' => Attempt::where('student_id', $student->id)->where('status', AttemptStatus::Released)->count(),
+                'average_score' => round((float) Attempt::where('student_id', $student->id)->where('status', AttemptStatus::Released)->avg('percentage'), 1),
+            ])
+            : [
+                'total_attempts' => 0,
+                'released_results' => 0,
+                'average_score' => 0,
+            ];
 
         return Inertia::render('Dashboard', [
-            'stats' => [
-                'total_attempts' => $totalAttempts,
-                'released_results' => $releasedResults,
-                'average_score' => round($averageScore, 1),
-            ],
+            'stats' => $stats,
             'recentAttempts' => [],
             'examsNeedingGrading' => [],
         ]);

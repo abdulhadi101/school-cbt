@@ -52,6 +52,9 @@ class GradingController extends Controller
     {
         $attempts = $exam->attempts()
             ->with('student:id,first_name,last_name,admission_number')
+            ->withCount(['answers as needs_grading_count' => function ($q) {
+                $q->whereIn('grading_status', [GradingStatus::Ungraded, GradingStatus::NeedsGrading]);
+            }])
             ->whereIn('status', [AttemptStatus::Submitted, AttemptStatus::Grading, AttemptStatus::Graded])
             ->get()
             ->map(fn (Attempt $attempt) => [
@@ -62,9 +65,7 @@ class GradingController extends Controller
                 'score' => $attempt->score,
                 'max_score' => $attempt->max_score,
                 'percentage' => $attempt->percentage,
-                'needs_grading' => in_array($attempt->status->value, ['submitted', 'grading']) || $attempt->answers()
-                    ->whereIn('grading_status', [GradingStatus::Ungraded, GradingStatus::NeedsGrading])
-                    ->exists(),
+                'needs_grading' => in_array($attempt->status->value, ['submitted', 'grading']) || $attempt->needs_grading_count > 0,
             ]);
 
         $pendingCount = $attempts->where('needs_grading', true)->count();
