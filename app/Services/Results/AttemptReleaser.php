@@ -13,7 +13,7 @@ class AttemptReleaser
 {
     public function release(Attempt $attempt, User $actor): Attempt
     {
-        return DB::transaction(function () use ($attempt, $actor) {
+        return DB::connection()->transaction(function () use ($attempt, $actor): Attempt {
             $attempt = Attempt::query()->lockForUpdate()->findOrFail($attempt->id);
 
             if ($attempt->status !== AttemptStatus::Graded) {

@@ -22,7 +22,7 @@ class AnswerAutosaver
         int $timeSpentSeconds = 0,
         string $source = 'web'
     ): AttemptAnswer {
-        return DB::transaction(function () use ($attempt, $attemptQuestion, $response, $clientSequence, $clientAnsweredAt, $timeSpentSeconds, $source) {
+        return DB::connection()->transaction(function () use ($attempt, $attemptQuestion, $response, $clientSequence, $clientAnsweredAt, $timeSpentSeconds, $source): AttemptAnswer {
             $attempt = Attempt::query()->lockForUpdate()->findOrFail($attempt->id);
             $attemptQuestion = AttemptQuestion::query()->findOrFail($attemptQuestion->id);
 

@@ -1,0 +1,793 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Verified constructor expects Illuminate\\Contracts\\Auth\\MustVerifyEmail, App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$academicSession\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$classLevel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$entry\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_version_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$subject_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted'', array\{App\\Enums\\ExamStatus\:\:Draft, App\\Enums\\ExamStatus\:\:Rejected\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 4
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Staff\\ExamDraftController\:\:submissionError\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\QuestionVersion\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{question_version_id\: int\<0, max\>\|null, marks_per_question\: float, question_label\: mixed\}, Closure\(App\\Models\\ExamDraftSlot\)\: array\{question_version_id\: int\<0, max\>\|null, marks_per_question\: float, question_label\: mixed\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Pagination\\AbstractPaginator\<int,App\\Models\\Exam\>\:\:through\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:sum\(\) expects \(callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: float\)\|string\|null, Closure\(App\\Models\\ExamDraftSlot\)\: float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted'' and App\\Enums\\ExamStatus\:\:Approved will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted'' and App\\Enums\\ExamStatus\:\:Submitted will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted''\|null and App\\Enums\\ExamStatus\:\:Approved will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted''\|null and App\\Enums\\ExamStatus\:\:Submitted will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 4
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>created_by" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Staff/ExamDraftController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Controllers/Staff/GradingController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$default_marks\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$difficulty\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$explanation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$general_feedback\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$grading_rules\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$negative_marks\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$options\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_text\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$ready_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$version_number\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:options\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Pagination\\AbstractPaginator\<int,App\\Models\\QuestionBankEntry\>\:\:through\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Parameter \#1 \$version of method App\\Http\\Controllers\\Staff\\QuestionBankController\:\:createOptions\(\) expects App\\Models\\QuestionVersion, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>version_number" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Staff/QuestionBankController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Student/AttemptController.php
+
+		-
+			message: '#^Parameter \#2 \$student of method App\\Services\\Attempts\\AttemptStarter\:\:startOrResume\(\) expects App\\Models\\Student, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Student/AttemptController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Student/AttemptPageController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:InProgress will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Student/AttemptPageController.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Http/Controllers/Student/AttemptPageController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:InProgress will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AnswerAutosaver.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Attempts/AnswerAutosaver.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$marks\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_snapshot\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Call to function is_numeric\(\) with null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Match arm comparison between App\\Enums\\QuestionType\:\:FillBlank and App\\Enums\\QuestionType\:\:FillBlank is always true\.$#'
+			identifier: match.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Offset ''answer'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Offset ''answers'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Offset ''selected_option_id'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Offset ''selected_option_ids'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Attempts/AnswerGrader.php
+
+		-
+			message: '#^Property App\\Services\\Attempts\\AttemptExpirer\:\:\$submitter is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: app/Services/Attempts/AttemptExpirer.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AttemptExpirer.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:InProgress will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AttemptExpirer.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Attempts/AttemptExpirer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$feedback\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$fraction\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$option_text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''essay''\|''fill_blank''\|''multiple_choice''\|''numerical''\|''short_answer''\|''single_choice''\|''true_false'', array\{App\\Enums\\QuestionType\:\:SingleChoice, App\\Enums\\QuestionType\:\:MultipleChoice, App\\Enums\\QuestionType\:\:TrueFalse\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Method App\\Services\\Attempts\\AttemptStarter\:\:optionOrder\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Method App\\Services\\Attempts\\AttemptStarter\:\:optionOrder\(\) never returns array\<int, int\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Method App\\Services\\Attempts\\AttemptStarter\:\:questionSnapshot\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Method App\\Services\\Attempts\\AttemptStarter\:\:resolveQuestions\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''approved''\|''archived''\|''closed''\|''draft''\|''published''\|''rejected''\|''submitted'' and App\\Enums\\ExamStatus\:\:Published will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Services/Attempts/AttemptStarter.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'', array\{App\\Enums\\AttemptStatus\:\:Graded, App\\Enums\\AttemptStatus\:\:Grading, App\\Enums\\AttemptStatus\:\:Submitted, App\\Enums\\AttemptStatus\:\:Released\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Attempts/AttemptSubmitter.php
+
+		-
+			message: '#^Property App\\Services\\Attempts\\AttemptSubmitter\:\:\$grader is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: app/Services/Attempts/AttemptSubmitter.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:InProgress will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Attempts/AttemptSubmitter.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Attempts/AttemptSubmitter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$answer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$duration_minutes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$instructions\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$marks\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$option_order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_snapshot\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>client_sequence" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Attempts/AttemptTakingPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$difficulty\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$marks_per_question\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_category_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_version_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slot_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tag_ids\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:slots\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Cannot call method toISOString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Method App\\Services\\Exams\\ExamRevisionPublisher\:\:publish\(\) should return App\\Models\\ExamRevision but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Exams/ExamRevisionPublisher.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$marks\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:events\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''auto_graded''\|''manually_graded''\|''needs_grading''\|''ungraded'', array\{App\\Enums\\GradingStatus\:\:Ungraded, App\\Enums\\GradingStatus\:\:NeedsGrading\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Parameter \#1 \$attempt of method App\\Services\\Grading\\ManualGrader\:\:finalizeIfComplete\(\) expects App\\Models\\Attempt, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:sum\(\) expects \(callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: float\)\|string\|null, Closure\(App\\Models\\AttemptAnswer\)\: float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Parameter \#1 \$key of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:contains\(\) expects \(callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: bool\)\|Illuminate\\Database\\Eloquent\\Model\|int\|string, Closure\(App\\Models\\AttemptAnswer\)\: false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:Released will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:Submitted will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Services/Grading/ManualGrader.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/Invigilation/InvigilationDashboard.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Attempt\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Invigilation/InvigilationDashboard.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'' and App\\Enums\\AttemptStatus\:\:Graded will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/Results/AttemptReleaser.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Results/AttemptReleaser.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$answer\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$marks\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$option_order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$question_snapshot\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$requires_manual_grading\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$exam of method App\\Services\\Results\\ResultReleasePolicy\:\:canSeeCorrectAnswers\(\) expects App\\Models\\Exam, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$exam of method App\\Services\\Results\\ResultReleasePolicy\:\:canSeeFeedback\(\) expects App\\Models\\Exam, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$exam of method App\\Services\\Results\\ResultReleasePolicy\:\:canSeeResponses\(\) expects App\\Models\\Exam, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Parameter \#1 \$exam of method App\\Services\\Results\\ResultReleasePolicy\:\:isScoreReleased\(\) expects App\\Models\\Exam, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Results/AttemptResultPresenter.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''expired''\|''graded''\|''grading''\|''in_progress''\|''invalidated''\|''not_started''\|''released''\|''submitted'', array\{App\\Enums\\AttemptStatus\:\:Graded, App\\Enums\\AttemptStatus\:\:Released\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Results/ResultReleasePolicy.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Results/ResultReleasePolicy.php
