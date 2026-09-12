@@ -350,6 +350,7 @@ class ExamDraftController extends Controller
 
         return [
             'can_create' => (bool) $user?->hasPermission('exams.create'),
+            'can_invigilate' => (bool) $user?->hasPermission('attempts.invigilate'),
             'can_edit' => $exam
                 ? (bool) $user?->hasPermission('exams.update') && in_array($exam->status, [ExamStatus::Draft, ExamStatus::Rejected], true)
                 : (bool) $user?->hasPermission('exams.create'),

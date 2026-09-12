@@ -17,7 +17,7 @@ type Exam = {
 defineProps<{
     exams: { data: Exam[]; links: { url: string | null; label: string; active: boolean }[] };
     filters: { status: string };
-    actions: { can_create: boolean };
+    actions: { can_create: boolean; can_invigilate?: boolean };
 }>();
 </script>
 
@@ -67,6 +67,7 @@ defineProps<{
                                     <Link :href="route('staff.exams.edit', exam.id)" class="font-semibold text-slate-700 hover:text-slate-950">Open</Link>
                                     <Link :href="route('staff.exams.schedule.edit', exam.id)" class="ml-4 font-semibold text-slate-700 hover:text-slate-950">Schedule</Link>
                                     <Link :href="route('staff.results.show', exam.id)" class="ml-4 font-semibold text-slate-700 hover:text-slate-950">Results</Link>
+                                    <Link v-if="actions.can_invigilate" :href="route('staff.exams.invigilation', exam.id)" class="ml-4 font-semibold text-slate-700 hover:text-slate-950">Invigilate</Link>
                                 </td>
                             </tr>
                             <tr v-if="exams.data.length === 0">

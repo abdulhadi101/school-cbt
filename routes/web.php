@@ -3,14 +3,17 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Staff\AttemptActionController;
 use App\Http\Controllers\Staff\AuditLogController;
 use App\Http\Controllers\Staff\ExamDraftController;
 use App\Http\Controllers\Staff\ExamPublishController;
 use App\Http\Controllers\Staff\ExamScheduleController;
 use App\Http\Controllers\Staff\GradingController;
 use App\Http\Controllers\Staff\InvigilationController;
+use App\Http\Controllers\Staff\MySubjectsController;
 use App\Http\Controllers\Staff\QuestionBankController;
 use App\Http\Controllers\Staff\ResultReleaseController;
+use App\Http\Controllers\Staff\SubjectClassQuestionController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
 use App\Http\Controllers\Student\ExamListController;
@@ -124,13 +127,31 @@ Route::middleware(['auth', 'permission:results.release'])->group(function () {
 });
 
 Route::middleware(['auth', 'permission:attempts.invigilate'])->group(function () {
+    Route::get('/staff/invigilation', [InvigilationController::class, 'index'])->name('staff.invigilation.index');
     Route::get('/staff/exams/{exam}/invigilation', [InvigilationController::class, 'show'])->name('staff.exams.invigilation');
     Route::get('/staff/exams/{exam}/invigilation/status', [InvigilationController::class, 'status'])->name('staff.exams.invigilation.status');
+});
+
+Route::middleware(['auth', 'permission:attempts.reopen'])->group(function () {
+    Route::post('/staff/attempts/{attempt}/extend', [AttemptActionController::class, 'extend'])->name('staff.attempts.extend');
+    Route::post('/staff/attempts/{attempt}/reopen', [AttemptActionController::class, 'reopen'])->name('staff.attempts.reopen');
+});
+
+Route::middleware(['auth', 'permission:attempts.invalidate'])->group(function () {
+    Route::post('/staff/attempts/{attempt}/invalidate', [AttemptActionController::class, 'invalidate'])->name('staff.attempts.invalidate');
 });
 
 Route::middleware(['auth', 'permission:questions.view'])->group(function () {
     Route::get('/staff/questions', [QuestionBankController::class, 'index'])->name('staff.questions.index');
     Route::get('/staff/questions/{question}/edit', [QuestionBankController::class, 'edit'])->name('staff.questions.edit');
+    Route::get('/staff/my-subjects', [MySubjectsController::class, 'index'])->name('staff.my-subjects.index');
+    Route::get('/staff/subjects/{subject}/classes/{classLevel}/questions', [SubjectClassQuestionController::class, 'index'])->name('staff.subject-questions.index');
+    Route::get('/staff/subjects/{subject}/classes/{classLevel}/questions/import', [SubjectClassQuestionController::class, 'importForm'])->name('staff.subject-questions.import');
+});
+
+Route::middleware(['auth', 'permission:questions.create'])->group(function () {
+    Route::post('/staff/subjects/{subject}/classes/{classLevel}/questions/import/preview', [SubjectClassQuestionController::class, 'preview'])->name('staff.subject-questions.preview');
+    Route::post('/staff/subjects/{subject}/classes/{classLevel}/questions/import', [SubjectClassQuestionController::class, 'store'])->name('staff.subject-questions.store');
 });
 
 Route::middleware(['auth', 'permission:questions.create'])->group(function () {

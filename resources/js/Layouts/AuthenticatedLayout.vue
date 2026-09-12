@@ -18,10 +18,14 @@ const staffLinks = computed(() => {
     if (permissions.value.includes('exams.view')) {
         links.push({ href: route('staff.exams.index'), label: 'Exams', active: route().current('staff.exams.*') });
     }
+    if (permissions.value.includes('attempts.invigilate')) {
+        links.push({ href: route('staff.invigilation.index'), label: 'Invigilation', active: route().current('staff.invigilation.*') || route().current('staff.exams.invigilation*') });
+    }
     if (permissions.value.includes('grades.grade')) {
         links.push({ href: route('staff.grading.index'), label: 'Grading', active: route().current('staff.grading.*') });
     }
     if (permissions.value.includes('questions.view')) {
+        links.push({ href: route('staff.my-subjects.index'), label: 'My Subjects', active: route().current('staff.my-subjects.*') || route().current('staff.subject-questions.*') });
         links.push({ href: route('staff.questions.index'), label: 'Questions', active: route().current('staff.questions.*') });
     }
     if (permissions.value.includes('results.release')) {

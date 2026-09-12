@@ -11,6 +11,13 @@ use Inertia\Response;
 
 class InvigilationController extends Controller
 {
+    public function index(InvigilationDashboard $dashboard): Response
+    {
+        return Inertia::render('Staff/Invigilation/Index', [
+            'exams' => $dashboard->liveExams(),
+        ]);
+    }
+
     public function show(Exam $exam, InvigilationDashboard $dashboard): Response
     {
         return Inertia::render('Staff/Invigilation/Show', [
