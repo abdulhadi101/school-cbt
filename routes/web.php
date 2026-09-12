@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Staff\AuditLogController;
 use App\Http\Controllers\Staff\ExamDraftController;
 use App\Http\Controllers\Staff\ExamPublishController;
 use App\Http\Controllers\Staff\ExamScheduleController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Staff\ResultReleaseController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
 use App\Http\Controllers\Student\ExamListController;
+use App\Http\Controllers\Student\StudentResultsController;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -64,6 +66,11 @@ Route::middleware(['auth', 'permission:attempts.take'])->group(function () {
 });
 
 Route::middleware('auth')->get('/attempts/{attempt}/result', [AttemptController::class, 'result'])->name('attempts.result');
+
+Route::middleware(['auth', 'permission:attempts.take'])->group(function () {
+    Route::get('/student/results', [StudentResultsController::class, 'index'])->name('student.results.index');
+    Route::get('/student/results/{attempt}', [StudentResultsController::class, 'show'])->name('student.results.show');
+});
 
 Route::middleware(['auth', 'permission:exams.publish'])->group(function () {
     Route::post('/staff/exams/{exam}/publish', [ExamPublishController::class, 'publish'])->name('staff.exams.publish');
@@ -138,6 +145,10 @@ Route::middleware(['auth', 'permission:questions.update'])->group(function () {
 Route::middleware(['auth', 'permission:questions.review'])->group(function () {
     Route::post('/staff/questions/{question}/ready', [QuestionBankController::class, 'markReady'])->name('staff.questions.ready');
     Route::post('/staff/questions/{question}/retire', [QuestionBankController::class, 'retire'])->name('staff.questions.retire');
+});
+
+Route::middleware(['auth', 'permission:results.release'])->group(function () {
+    Route::get('/staff/audit-logs', [AuditLogController::class, 'index'])->name('staff.audit-logs.index');
 });
 
 require __DIR__.'/auth.php';

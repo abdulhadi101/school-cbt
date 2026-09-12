@@ -24,6 +24,9 @@ const staffLinks = computed(() => {
     if (permissions.value.includes('questions.view')) {
         links.push({ href: route('staff.questions.index'), label: 'Questions', active: route().current('staff.questions.*') });
     }
+    if (permissions.value.includes('results.release')) {
+        links.push({ href: route('staff.audit-logs.index'), label: 'Audit Log', active: route().current('staff.audit-logs.*') });
+    }
     return links;
 });
 
@@ -31,6 +34,7 @@ const studentLinks = computed(() => {
     const links = [];
     if (permissions.value.includes('attempts.take')) {
         links.push({ href: route('student.exams.index'), label: 'Exams', active: route().current('student.exams.*') });
+        links.push({ href: route('student.results.index'), label: 'Results', active: route().current('student.results.*') });
     }
     return links;
 });
