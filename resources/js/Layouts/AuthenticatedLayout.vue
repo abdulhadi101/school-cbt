@@ -31,6 +31,13 @@ const staffLinks = computed(() => {
     if (permissions.value.includes('results.release')) {
         links.push({ href: route('staff.audit-logs.index'), label: 'Audit Log', active: route().current('staff.audit-logs.*') });
     }
+    if (permissions.value.includes('users.manage')) {
+        links.push({ href: route('staff.users.staff.index'), label: 'Staff', active: route().current('staff.users.staff.*') });
+        links.push({ href: route('staff.users.students.index'), label: 'Students', active: route().current('staff.users.students.*') });
+    }
+    if (permissions.value.includes('system.manage')) {
+        links.push({ href: route('staff.settings.school'), label: 'Settings', active: route().current('staff.settings.*') });
+    }
     return links;
 });
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 type UpcomingExam = {
     title: string;
@@ -12,12 +13,13 @@ type UpcomingExam = {
 };
 
 defineProps<{
-    school: { name: string; code: string | null };
     stats: { students: number; subjects: number; published_exams: number; completed_attempts: number };
     upcoming: UpcomingExam[];
     canLogin: boolean;
-    canRegister: boolean;
 }>();
+
+const page = usePage();
+const school = computed(() => (page.props.school as Record<string, unknown>) ?? {});
 
 function formatDate(value: string | null): string {
     if (!value) return '—';
@@ -26,14 +28,15 @@ function formatDate(value: string | null): string {
 </script>
 
 <template>
-    <Head :title="school.name" />
+    <Head :title="(school.name as string)" />
 
     <div class="min-h-screen bg-slate-50 text-slate-900">
         <header class="border-b border-slate-200 bg-white">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
                 <div class="flex items-center gap-3">
-                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-700 text-lg font-bold text-white">
-                        {{ school.name.charAt(0) }}
+                    <img v-if="school.logo_url" :src="school.logo_url as string" :alt="(school.name as string)" class="h-10 w-auto object-contain" />
+                    <div v-else class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-700 text-lg font-bold text-white">
+                        {{ (school.name as string).charAt(0) }}
                     </div>
                     <div>
                         <p class="font-bold leading-tight">{{ school.name }}</p>
@@ -44,7 +47,6 @@ function formatDate(value: string | null): string {
                     <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Dashboard</Link>
                     <template v-else>
                         <Link :href="route('login')" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Log in</Link>
-                        <Link v-if="canRegister" :href="route('register')" class="rounded-lg border px-4 py-2 text-sm font-semibold text-slate-700">Register</Link>
                     </template>
                 </nav>
             </div>

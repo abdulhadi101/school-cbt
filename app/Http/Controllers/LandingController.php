@@ -7,7 +7,6 @@ use App\Enums\ExamStatus;
 use App\Enums\StudentStatus;
 use App\Models\Attempt;
 use App\Models\Exam;
-use App\Models\SchoolSetting;
 use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Cache;
@@ -19,8 +18,6 @@ class LandingController extends Controller
 {
     public function __invoke(): Response
     {
-        $school = SchoolSetting::query()->first();
-
         $stats = Cache::remember('landing:stats', 300, fn (): array => [
             'students' => Student::query()->where('status', StudentStatus::Active)->count(),
             'subjects' => Subject::query()->count(),
@@ -56,14 +53,9 @@ class LandingController extends Controller
             ])->values()->all();
 
         return Inertia::render('Landing', [
-            'school' => [
-                'name' => $school?->name ?? 'School CBT',
-                'code' => $school?->code,
-            ],
             'stats' => $stats,
             'upcoming' => $upcoming,
             'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
         ]);
     }
 }

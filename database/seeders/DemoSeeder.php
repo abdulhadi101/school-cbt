@@ -21,6 +21,7 @@ use App\Models\QuestionCategory;
 use App\Models\QuestionOption;
 use App\Models\QuestionVersion;
 use App\Models\Role;
+use App\Models\SchoolSetting;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
@@ -44,6 +45,19 @@ class DemoSeeder extends Seeder
 
     private function ensureAcademicStructure(): void
     {
+        SchoolSetting::query()->firstOrCreate([], [
+            'name' => 'Greenfield Academy',
+            'code' => 'GFA',
+            'address' => '12 Education Road, Abuja, Nigeria',
+            'phone' => '+234 801 234 5678',
+            'email' => 'info@greenfieldacademy.edu.ng',
+            'settings' => [
+                'motto' => 'Knowledge is Power',
+                'website' => 'https://greenfieldacademy.edu.ng',
+                'academic_year' => now()->year.'/'.(now()->year + 1),
+            ],
+        ]);
+
         $session = AcademicSession::query()->firstOrCreate(
             ['name' => now()->year.'/'.now()->addYear()->year],
             ['is_current' => true]

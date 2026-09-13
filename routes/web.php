@@ -14,7 +14,11 @@ use App\Http\Controllers\Staff\InvigilationController;
 use App\Http\Controllers\Staff\MySubjectsController;
 use App\Http\Controllers\Staff\QuestionBankController;
 use App\Http\Controllers\Staff\ResultReleaseController;
+use App\Http\Controllers\Staff\SchoolSettingsController;
+use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\Staff\StudentController;
 use App\Http\Controllers\Staff\SubjectClassQuestionController;
+use App\Http\Controllers\Staff\UserImportController;
 use App\Http\Controllers\Student\AttemptController;
 use App\Http\Controllers\Student\AttemptPageController;
 use App\Http\Controllers\Student\ExamListController;
@@ -162,6 +166,44 @@ Route::middleware(['auth', 'permission:questions.review'])->group(function () {
 
 Route::middleware(['auth', 'permission:results.release'])->group(function () {
     Route::get('/staff/audit-logs', [AuditLogController::class, 'index'])->name('staff.audit-logs.index');
+});
+
+Route::middleware(['auth', 'permission:system.manage'])->group(function () {
+    Route::get('/staff/settings/school', [SchoolSettingsController::class, 'edit'])->name('staff.settings.school');
+    Route::post('/staff/settings/school', [SchoolSettingsController::class, 'update'])->name('staff.settings.school.update');
+});
+
+Route::middleware(['auth', 'permission:users.manage'])->group(function () {
+    Route::get('/staff/users/staff', [StaffController::class, 'index'])->name('staff.users.staff.index');
+    Route::get('/staff/users/staff/create', [StaffController::class, 'create'])->name('staff.users.staff.create');
+    Route::post('/staff/users/staff', [StaffController::class, 'store'])->name('staff.users.staff.store');
+    Route::get('/staff/users/staff/{user}/edit', [StaffController::class, 'edit'])->name('staff.users.staff.edit');
+    Route::put('/staff/users/staff/{user}', [StaffController::class, 'update'])->name('staff.users.staff.update');
+    Route::post('/staff/users/staff/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('staff.users.staff.reset-password');
+    Route::post('/staff/users/staff/{user}/toggle-active', [StaffController::class, 'toggleActive'])->name('staff.users.staff.toggle-active');
+    Route::delete('/staff/users/staff/{user}', [StaffController::class, 'destroy'])->name('staff.users.staff.destroy');
+
+    Route::get('/staff/users/staff/template', [UserImportController::class, 'staffTemplate'])->name('staff.users.staff.template');
+    Route::get('/staff/users/staff/export', [UserImportController::class, 'staffExport'])->name('staff.users.staff.export');
+    Route::get('/staff/users/staff/import', [UserImportController::class, 'staffImportForm'])->name('staff.users.staff.import-form');
+    Route::post('/staff/users/staff/import/preview', [UserImportController::class, 'staffPreview'])->name('staff.users.staff.preview');
+    Route::post('/staff/users/staff/import', [UserImportController::class, 'staffImport'])->name('staff.users.staff.import');
+
+    Route::get('/staff/users/students', [StudentController::class, 'index'])->name('staff.users.students.index');
+    Route::get('/staff/users/students/create', [StudentController::class, 'create'])->name('staff.users.students.create');
+    Route::post('/staff/users/students', [StudentController::class, 'store'])->name('staff.users.students.store');
+    Route::get('/staff/users/students/{student}/edit', [StudentController::class, 'edit'])->name('staff.users.students.edit');
+    Route::put('/staff/users/students/{student}', [StudentController::class, 'update'])->name('staff.users.students.update');
+    Route::post('/staff/users/students/{student}/create-account', [StudentController::class, 'createAccount'])->name('staff.users.students.create-account');
+    Route::post('/staff/users/students/{student}/reset-password', [StudentController::class, 'resetPassword'])->name('staff.users.students.reset-password');
+    Route::post('/staff/users/students/{student}/toggle-active', [StudentController::class, 'toggleActive'])->name('staff.users.students.toggle-active');
+    Route::delete('/staff/users/students/{student}', [StudentController::class, 'destroy'])->name('staff.users.students.destroy');
+
+    Route::get('/staff/users/students/template', [UserImportController::class, 'studentTemplate'])->name('staff.users.students.template');
+    Route::get('/staff/users/students/export', [UserImportController::class, 'studentExport'])->name('staff.users.students.export');
+    Route::get('/staff/users/students/import', [UserImportController::class, 'studentImportForm'])->name('staff.users.students.import-form');
+    Route::post('/staff/users/students/import/preview', [UserImportController::class, 'studentPreview'])->name('staff.users.students.preview');
+    Route::post('/staff/users/students/import', [UserImportController::class, 'studentImport'])->name('staff.users.students.import');
 });
 
 require __DIR__.'/auth.php';
