@@ -26,7 +26,7 @@ class SetupSchool extends Command
         {--admin-name=System Administrator : Initial admin display name}
         {--admin-email=admin@school.test : Initial admin email}
         {--admin-password= : Initial admin password. Generated if omitted}
-        {--staff-password=staff12345 : Initial password for starter staff accounts}
+        {--staff-password=password : Initial password for starter staff accounts}
         {--sample-roster : Write a sample roster CSV to local storage}
         {--sample-roster-path=rosters/sample-students.csv : Local disk path for the sample roster CSV}';
 

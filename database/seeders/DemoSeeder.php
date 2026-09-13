@@ -36,6 +36,7 @@ class DemoSeeder extends Seeder
     public function run(): void
     {
         $this->ensureAcademicStructure();
+        $this->ensureAdmin();
         $publisher = $this->ensureStaff();
         $students = $this->createStudents();
         $questions = $this->createQuestions();
@@ -76,6 +77,22 @@ class DemoSeeder extends Seeder
         Section::query()->firstOrCreate(['class_level_id' => $jss1->id, 'name' => 'B'], ['capacity' => 40]);
 
         Subject::query()->firstOrCreate(['code' => 'MTH'], ['name' => 'Mathematics']);
+    }
+
+    private function ensureAdmin(): void
+    {
+        $role = Role::query()->firstOrCreate(['name' => 'system-admin'], ['label' => 'System Administrator']);
+
+        $user = User::query()->firstOrCreate(
+            ['email' => 'admin@school.test'],
+            [
+                'name' => 'System Administrator',
+                'username' => 'admin',
+                'password' => Hash::make('password'),
+                'is_active' => true,
+            ]
+        );
+        $user->roles()->syncWithoutDetaching([$role->id]);
     }
 
     private function ensureStaff(): User
