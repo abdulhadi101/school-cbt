@@ -26,8 +26,8 @@ return new class extends Migration
 
         Schema::create('backup_runs', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['manual', 'scheduled'])->default('manual')->index();
-            $table->enum('status', ['pending', 'running', 'completed', 'failed'])->default('pending')->index();
+            $table->string('type', 30)->default('manual')->index();
+            $table->string('status', 30)->default('pending')->index();
             $table->string('disk')->default('local');
             $table->string('path')->nullable();
             $table->unsignedBigInteger('size_bytes')->nullable();

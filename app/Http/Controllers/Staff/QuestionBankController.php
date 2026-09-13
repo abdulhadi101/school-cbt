@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\Enums\Difficulty;
+use App\Enums\QuestionStatus;
 use App\Enums\QuestionType;
 use App\Http\Controllers\Controller;
 use App\Models\ClassLevel;
@@ -33,7 +35,7 @@ class QuestionBankController extends Controller
             ->through(fn (QuestionBankEntry $entry): array => [
                 'id' => $entry->id,
                 'title' => $entry->title,
-                'status' => $entry->status,
+                'status' => $entry->status->value,
                 'subject' => $entry->subject?->name,
                 'class_level' => $entry->classLevel?->name,
                 'category' => $entry->category?->name,
@@ -42,7 +44,7 @@ class QuestionBankController extends Controller
                     'id' => $entry->latestVersion->id,
                     'version_number' => $entry->latestVersion->version_number,
                     'type' => $entry->latestVersion->type->value,
-                    'difficulty' => $entry->latestVersion->difficulty,
+                    'difficulty' => $entry->latestVersion->difficulty?->value,
                     'default_marks' => $entry->latestVersion->default_marks,
                     'question_text' => Str::limit(strip_tags($entry->latestVersion->question_text), 140),
                 ] : null,
@@ -72,7 +74,7 @@ class QuestionBankController extends Controller
                 'subject_id' => $data['subject_id'] ?? null,
                 'class_level_id' => $data['class_level_id'] ?? null,
                 'created_by' => $request->user()?->id,
-                'status' => 'draft',
+                'status' => QuestionStatus::Draft,
                 'title' => $data['title'],
             ]);
 
@@ -93,7 +95,7 @@ class QuestionBankController extends Controller
         return Inertia::render('Staff/Questions/Form', [
             'entry' => [
                 'id' => $question->id,
-                'status' => $question->status,
+                'status' => $question->status->value,
                 'title' => $question->title,
                 'subject_id' => $question->subject_id,
                 'class_level_id' => $question->class_level_id,
@@ -103,7 +105,7 @@ class QuestionBankController extends Controller
                     'id' => $version->id,
                     'version_number' => $version->version_number,
                     'type' => $version->type->value,
-                    'difficulty' => $version->difficulty,
+                    'difficulty' => $version->difficulty?->value,
                     'question_text' => $version->question_text,
                     'default_marks' => $version->default_marks,
                     'negative_marks' => $version->negative_marks,
@@ -130,7 +132,7 @@ class QuestionBankController extends Controller
                 'category_id' => $data['category_id'] ?? null,
                 'subject_id' => $data['subject_id'] ?? null,
                 'class_level_id' => $data['class_level_id'] ?? null,
-                'status' => 'draft',
+                'status' => QuestionStatus::Draft,
                 'title' => $data['title'],
             ]);
 
@@ -167,14 +169,14 @@ class QuestionBankController extends Controller
         }
 
         $version->update(['ready_at' => now()]);
-        $question->update(['status' => 'ready']);
+        $question->update(['status' => QuestionStatus::Ready]);
 
         return back()->with('status', 'Question marked ready.');
     }
 
     public function retire(QuestionBankEntry $question): RedirectResponse
     {
-        $question->update(['status' => 'retired']);
+        $question->update(['status' => QuestionStatus::Retired]);
 
         return back()->with('status', 'Question retired.');
     }
@@ -193,7 +195,7 @@ class QuestionBankController extends Controller
             'category_id' => ['nullable', 'integer', Rule::exists('question_categories', 'id')],
             'tags' => ['nullable', 'string', 'max:500'],
             'type' => ['required', Rule::enum(QuestionType::class)],
-            'difficulty' => ['nullable', Rule::in(['easy', 'medium', 'hard'])],
+            'difficulty' => ['nullable', Rule::enum(Difficulty::class)],
             'question_text' => ['required', 'string'],
             'default_marks' => ['required', 'numeric', 'min:0.01', 'max:999999'],
             'negative_marks' => ['nullable', 'numeric', 'min:0', 'max:999999'],
@@ -292,7 +294,7 @@ class QuestionBankController extends Controller
             'class_levels' => ClassLevel::query()->orderBy('sort_order')->orderBy('name')->get(['id', 'name']),
             'categories' => QuestionCategory::query()->orderBy('name')->get(['id', 'name', 'subject_id', 'class_level_id']),
             'types' => collect(QuestionType::cases())->map(fn (QuestionType $type): array => ['value' => $type->value, 'label' => Str::headline($type->value)]),
-            'difficulties' => ['easy', 'medium', 'hard'],
+            'difficulties' => collect(Difficulty::cases())->map(fn (Difficulty $difficulty): string => $difficulty->value)->all(),
         ];
     }
 }

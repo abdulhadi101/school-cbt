@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Difficulty;
+use App\Enums\SlotType;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +17,8 @@ class ExamSlot extends Model
     protected function casts(): array
     {
         return [
+            'slot_type' => SlotType::class,
+            'difficulty' => Difficulty::class,
             'tag_ids' => 'array',
             'marks_per_question' => 'decimal:2',
         ];

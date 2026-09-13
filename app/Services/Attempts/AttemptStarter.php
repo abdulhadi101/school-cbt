@@ -5,6 +5,7 @@ namespace App\Services\Attempts;
 use App\Enums\AttemptStatus;
 use App\Enums\ExamStatus;
 use App\Enums\QuestionType;
+use App\Enums\SlotType;
 use App\Models\Attempt;
 use App\Models\Exam;
 use App\Models\ExamSlot;
@@ -125,7 +126,7 @@ class AttemptStarter
         return $slots
             ->sortBy('position')
             ->flatMap(function (ExamSlot $slot) use ($seed) {
-                if ($slot->slot_type === 'fixed_question') {
+                if ($slot->slot_type === SlotType::FixedQuestion) {
                     return [[
                         'slot' => $slot,
                         'question' => $slot->questionVersion,

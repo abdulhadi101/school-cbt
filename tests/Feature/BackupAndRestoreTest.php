@@ -25,7 +25,7 @@ class BackupAndRestoreTest extends TestCase
 
         $run = BackupRun::query()->sole();
 
-        $this->assertSame('completed', $run->status);
+        $this->assertSame('completed', $run->status->value);
         $this->assertNotNull($run->checksum);
         Storage::disk('local')->assertExists($run->path);
     }

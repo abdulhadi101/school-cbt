@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('exam_revision_id')->constrained()->restrictOnDelete();
             $table->foreignId('student_id')->constrained()->restrictOnDelete();
             $table->unsignedSmallInteger('attempt_number');
-            $table->enum('status', ['not_started', 'in_progress', 'submitted', 'expired', 'grading', 'graded', 'released', 'invalidated'])->default('in_progress')->index();
+            $table->string('status', 30)->default('in_progress')->index();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('deadline_at')->nullable()->index();
             $table->timestamp('submitted_at')->nullable();
@@ -58,7 +58,7 @@ return new class extends Migration
             $table->timestamp('client_answered_at')->nullable();
             $table->timestamp('answered_at')->nullable();
             $table->unsignedInteger('time_spent_seconds')->default(0);
-            $table->enum('grading_status', ['ungraded', 'auto_graded', 'needs_grading', 'manually_graded'])->default('ungraded')->index();
+            $table->string('grading_status', 30)->default('ungraded')->index();
             $table->decimal('score', 8, 2)->nullable();
             $table->boolean('is_correct')->nullable();
             $table->longText('feedback')->nullable();

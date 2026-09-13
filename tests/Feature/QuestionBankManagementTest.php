@@ -34,7 +34,7 @@ class QuestionBankManagementTest extends TestCase
         $entry = QuestionBankEntry::query()->with(['tags', 'latestVersion.options'])->sole();
 
         $this->assertSame('Simple addition', $entry->title);
-        $this->assertSame('draft', $entry->status);
+        $this->assertSame('draft', $entry->status->value);
         $this->assertSame(['arithmetic', 'first term'], $entry->tags->pluck('name')->sort()->values()->all());
         $this->assertSame(1, $entry->latestVersion->version_number);
         $this->assertSame(2, $entry->latestVersion->options()->count());
@@ -57,7 +57,7 @@ class QuestionBankManagementTest extends TestCase
         $this->actingAs($reviewer)->post(route('staff.questions.ready', $entry))->assertRedirect();
 
         $entry->refresh();
-        $this->assertSame('ready', $entry->status);
+        $this->assertSame('ready', $entry->status->value);
         $this->assertNotNull($entry->latestVersion->ready_at);
     }
 
@@ -75,7 +75,7 @@ class QuestionBankManagementTest extends TestCase
 
         $this->assertSame('What is 2 + 2?', $readyVersion->fresh()->question_text);
         $this->assertSame(2, $entry->versions()->count());
-        $this->assertSame('draft', $entry->fresh()->status);
+        $this->assertSame('draft', $entry->fresh()->status->value);
         $this->assertSame('What is 3 + 3?', $entry->fresh()->latestVersion->question_text);
         $this->assertNull($entry->fresh()->latestVersion->ready_at);
     }

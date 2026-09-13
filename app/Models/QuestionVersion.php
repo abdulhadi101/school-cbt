@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Difficulty;
 use App\Enums\QuestionType;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ class QuestionVersion extends Model
     {
         return [
             'type' => QuestionType::class,
+            'difficulty' => Difficulty::class,
             'default_marks' => 'decimal:2',
             'negative_marks' => 'decimal:2',
             'grading_rules' => 'array',

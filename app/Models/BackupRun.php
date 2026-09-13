@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\BackupStatus;
+use App\Enums\BackupType;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +17,8 @@ class BackupRun extends Model
     protected function casts(): array
     {
         return [
+            'type' => BackupType::class,
+            'status' => BackupStatus::class,
             'started_at' => 'datetime',
             'finished_at' => 'datetime',
         ];

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
+import MathToolbar from '@/Components/MathToolbar.vue';
+import { insertAtCursor } from '@/support/math';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 type Option = { option_text: string; fraction: number; feedback: string };
 type Lookup = { id: number; name: string };
@@ -93,6 +97,21 @@ function markReady() {
     if (props.entry) router.post(route('staff.questions.ready', props.entry.id));
 }
 
+const activeField = ref<HTMLTextAreaElement | HTMLInputElement | null>(null);
+
+function trackField(event: FocusEvent) {
+    const target = event.target as HTMLElement | null;
+    if (target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement) {
+        activeField.value = target;
+    }
+}
+
+function insertSnippet(snippet: string) {
+    const fallback = document.getElementById('question-text-input');
+    const field = activeField.value ?? (fallback instanceof HTMLTextAreaElement ? fallback : null);
+    if (field) insertAtCursor(field, snippet);
+}
+
 function retire() {
     if (props.entry) router.post(route('staff.questions.retire', props.entry.id));
 }
@@ -113,7 +132,7 @@ function retire() {
         </template>
 
         <div class="py-8">
-            <form class="mx-auto max-w-5xl space-y-6 sm:px-6 lg:px-8" @submit.prevent="submit">
+            <form class="mx-auto max-w-5xl space-y-6 sm:px-6 lg:px-8" @submit.prevent="submit" @focusin="trackField">
                 <div class="rounded-xl bg-white p-6 shadow-sm">
                     <div class="grid gap-4 md:grid-cols-3">
                         <label class="md:col-span-3">
@@ -173,7 +192,13 @@ function retire() {
 
                         <label class="md:col-span-3">
                             <span class="text-sm font-medium text-gray-700">Question Text</span>
-                            <textarea v-model="form.question_text" rows="5" class="mt-1 w-full rounded-md border-gray-300 shadow-sm" />
+                            <MathToolbar class="mt-2" @insert="insertSnippet" />
+                            <textarea id="question-text-input" v-model="form.question_text" rows="5" class="mt-2 w-full rounded-md border-gray-300 shadow-sm" />
+                            <p class="mt-1 text-xs text-gray-500">Math: <span class="font-mono">\(x^2\)</span> inline, <span class="font-mono">\[…\]</span> display. Click any field, then a symbol to insert.</p>
+                            <div class="mt-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                                <p class="text-xs font-semibold uppercase text-gray-400">Preview</p>
+                                <MathContent :content="form.question_text" class="mt-1 block text-sm text-gray-900" />
+                            </div>
                             <span class="text-sm text-red-600">{{ form.errors.question_text }}</span>
                         </label>
                     </div>

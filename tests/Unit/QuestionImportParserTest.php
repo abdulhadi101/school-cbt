@@ -54,6 +54,58 @@ class QuestionImportParserTest extends TestCase
         $this->assertSame(3.14, $result['questions'][0]->gradingRules['answer']);
     }
 
+    public function test_gift_parses_multiple_correct_with_split_fractions(): void
+    {
+        $result = GiftParser::parse("Which are even? {\n= 2\n= 4\n~ 3\n}");
+
+        $this->assertCount(0, $result['errors']);
+        $this->assertSame('multiple_choice', $result['questions'][0]->type);
+        $this->assertSame([0.5, 0.5, 0.0], array_column($result['questions'][0]->options, 'fraction'));
+    }
+
+    public function test_gift_parses_short_answer_and_essay(): void
+    {
+        $short = GiftParser::parse("Capital of France? {\n= Paris\n= paris\n}");
+        $this->assertSame('short_answer', $short['questions'][0]->type);
+        $this->assertCount(2, $short['questions'][0]->options);
+
+        $essay = GiftParser::parse('Discuss photosynthesis. {}');
+        $this->assertSame('essay', $essay['questions'][0]->type);
+    }
+
+    public function test_gift_reports_missing_answer_block(): void
+    {
+        $result = GiftParser::parse('Just a statement with no braces');
+
+        $this->assertCount(0, $result['questions']);
+        $this->assertNotEmpty($result['errors']);
+    }
+
+    public function test_moodle_xml_parses_truefalse_and_rejects_unknown_type(): void
+    {
+        $xml = <<<'XML'
+<?xml version="1.0"?>
+<quiz>
+  <question type="truefalse">
+    <name><text>TF</text></name>
+    <questiontext><text>The sky is blue.</text></questiontext>
+    <answer fraction="100"><text>true</text></answer>
+    <answer fraction="0"><text>false</text></answer>
+  </question>
+  <question type="matching">
+    <name><text>M</text></name>
+    <questiontext><text>Match these.</text></questiontext>
+  </question>
+</quiz>
+XML;
+
+        $result = MoodleXmlParser::parse($xml);
+
+        $this->assertCount(1, $result['questions']);
+        $this->assertSame('true_false', $result['questions'][0]->type);
+        $this->assertCount(1, $result['errors']);
+    }
+
     public function test_moodle_xml_parses_multichoice(): void
     {
         $xml = <<<'XML'

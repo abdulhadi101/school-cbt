@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -123,7 +124,7 @@ function responseDisplay(response: Record<string, unknown> | null): string {
                             <div class="mb-4 flex items-start justify-between gap-4">
                                 <div>
                                     <p class="text-sm font-semibold text-slate-500">Question {{ currentQuestion.position }} of {{ questions.length }}</p>
-                                    <h3 class="mt-2 text-lg font-semibold text-gray-900" v-html="(currentQuestion.snapshot as Record<string, unknown>).question_text" />
+                                    <MathContent :content="(currentQuestion.snapshot as Record<string, unknown>).question_text as string" class="mt-2 block text-lg font-semibold text-gray-900" />
                                 </div>
                                 <span class="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">{{ currentQuestion.marks }} marks</span>
                             </div>

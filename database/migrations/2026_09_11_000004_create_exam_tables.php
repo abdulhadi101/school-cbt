@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->longText('instructions')->nullable();
-            $table->enum('exam_type', ['ca', 'exam', 'practice'])->default('ca')->index();
-            $table->enum('status', ['draft', 'submitted', 'approved', 'rejected', 'published', 'closed', 'archived'])->default('draft')->index();
+            $table->string('exam_type', 30)->default('ca')->index();
+            $table->string('status', 30)->default('draft')->index();
             $table->unsignedSmallInteger('duration_minutes');
             $table->decimal('total_marks', 8, 2);
             $table->decimal('pass_percentage', 5, 2)->default(50);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamp('closes_at')->nullable()->index();
             $table->boolean('shuffle_questions')->default(false);
             $table->boolean('shuffle_options')->default(false);
-            $table->enum('score_release_policy', ['immediate', 'after_close', 'manual', 'scheduled'])->default('manual');
+            $table->string('score_release_policy', 30)->default('manual');
             $table->timestamp('score_release_at')->nullable();
             $table->boolean('show_responses')->default(false);
             $table->boolean('show_correct_answers')->default(false);
@@ -55,11 +55,11 @@ return new class extends Migration
         Schema::create('exam_slots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_revision_id')->constrained()->cascadeOnDelete();
-            $table->enum('slot_type', ['fixed_question', 'random_pool']);
+            $table->string('slot_type', 30);
             $table->foreignId('question_version_id')->nullable()->constrained()->restrictOnDelete();
             $table->foreignId('question_category_id')->nullable()->constrained()->restrictOnDelete();
             $table->json('tag_ids')->nullable();
-            $table->enum('difficulty', ['easy', 'medium', 'hard'])->nullable();
+            $table->string('difficulty', 20)->nullable();
             $table->unsignedSmallInteger('question_count')->default(1);
             $table->decimal('marks_per_question', 8, 2);
             $table->unsignedSmallInteger('position');

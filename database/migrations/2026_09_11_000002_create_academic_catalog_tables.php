@@ -59,7 +59,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name')->nullable();
-            $table->enum('status', ['active', 'inactive', 'graduated', 'withdrawn'])->default('active')->index();
+            $table->string('status', 30)->default('active')->index();
             $table->timestamps();
         });
 

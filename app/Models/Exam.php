@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ExamStatus;
+use App\Enums\ExamType;
+use App\Enums\ScoreReleasePolicy;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +21,8 @@ class Exam extends Model
     {
         return [
             'status' => ExamStatus::class,
+            'exam_type' => ExamType::class,
+            'score_release_policy' => ScoreReleasePolicy::class,
             'duration_minutes' => 'integer',
             'total_marks' => 'decimal:2',
             'pass_percentage' => 'decimal:2',

@@ -3,6 +3,7 @@
 namespace App\Services\Results;
 
 use App\Enums\AttemptStatus;
+use App\Enums\ScoreReleasePolicy;
 use App\Models\Attempt;
 use App\Models\Exam;
 use Illuminate\Support\Carbon;
@@ -18,10 +19,10 @@ class ResultReleasePolicy
         }
 
         return match ($exam->score_release_policy) {
-            'immediate' => true,
-            'after_close' => $exam->closes_at === null || $now->greaterThanOrEqualTo($exam->closes_at),
-            'manual' => $attempt->status === AttemptStatus::Released,
-            'scheduled' => $exam->score_release_at !== null && $now->greaterThanOrEqualTo($exam->score_release_at),
+            ScoreReleasePolicy::Immediate => true,
+            ScoreReleasePolicy::AfterClose => $exam->closes_at === null || $now->greaterThanOrEqualTo($exam->closes_at),
+            ScoreReleasePolicy::Manual => $attempt->status === AttemptStatus::Released,
+            ScoreReleasePolicy::Scheduled => $exam->score_release_at !== null && $now->greaterThanOrEqualTo($exam->score_release_at),
             default => false,
         };
     }

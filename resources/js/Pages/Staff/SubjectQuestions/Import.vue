@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -115,7 +116,8 @@ function setFile(event: Event) {
                     </div>
 
                     <div class="mt-4 rounded-lg bg-gray-50 p-4 text-xs text-gray-600">
-                        <p class="font-semibold">Aiken example</p>
+                        <p class="font-semibold">Math supported: <span class="font-mono">\(x^2\)</span> inline, <span class="font-mono">\[…\]</span> display (KaTeX, Moodle-compatible).</p>
+                        <p class="mt-2 font-semibold">Aiken example</p>
                         <pre class="mt-1 whitespace-pre-wrap">Q1. What is a pawpaw?
 A. a place
 B. a town
@@ -145,10 +147,11 @@ ANSWER: C</pre>
                     <div class="mt-4 space-y-4">
                         <div v-for="(question, index) in preview.questions" :key="index" class="rounded-lg border p-4">
                             <div class="text-xs font-semibold uppercase text-gray-500">{{ question.type }}</div>
-                            <div class="mt-1 font-medium text-gray-900">{{ question.question_text }}</div>
+                            <MathContent :content="question.question_text" class="mt-1 block font-medium text-gray-900" />
                             <ul class="mt-2 space-y-1 text-sm">
-                                <li v-for="(option, optionIndex) in question.options" :key="optionIndex" :class="option.fraction > 0 ? 'font-semibold text-emerald-700' : 'text-gray-700'">
-                                    {{ option.fraction > 0 ? '✓' : '·' }} {{ option.option_text }} ({{ option.fraction }})
+                                <li v-for="(option, optionIndex) in question.options" :key="optionIndex" class="flex gap-1" :class="option.fraction > 0 ? 'font-semibold text-emerald-700' : 'text-gray-700'">
+                                    <span>{{ option.fraction > 0 ? '✓' : '·' }}</span>
+                                    <MathContent :content="`${option.option_text} (${option.fraction})`" class="block" />
                                 </li>
                             </ul>
                         </div>

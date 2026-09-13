@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
@@ -55,7 +56,7 @@ defineProps<{
                             <tr v-for="entry in entries.data" :key="entry.id">
                                 <td class="px-4 py-3">
                                     <div class="font-medium text-gray-900">{{ entry.title }}</div>
-                                    <div class="mt-1 text-sm text-gray-500">{{ entry.latest_version?.question_text }}</div>
+                                    <MathContent :content="entry.latest_version?.question_text" class="mt-1 block text-sm text-gray-500" />
                                     <div class="mt-2 flex flex-wrap gap-2">
                                         <span v-for="tag in entry.tags" :key="tag" class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">{{ tag }}</span>
                                     </div>

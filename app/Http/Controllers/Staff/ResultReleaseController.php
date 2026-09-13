@@ -52,7 +52,7 @@ class ResultReleaseController extends Controller
                 'title' => $exam->title,
                 'subject' => $exam->subject?->name,
                 'status' => $exam->status->value,
-                'score_release_policy' => $exam->score_release_policy,
+                'score_release_policy' => $exam->score_release_policy->value,
             ],
             'attempts' => $attempts->values()->all(),
             'summary' => $summary,

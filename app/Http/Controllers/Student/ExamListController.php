@@ -32,7 +32,7 @@ class ExamListController extends Controller
                     'title' => $exam->title,
                     'subject' => $exam->subject?->name,
                     'term' => $exam->term ? $exam->term->academicSession?->name.' - '.$exam->term->name : null,
-                    'exam_type' => $exam->exam_type,
+                    'exam_type' => $exam->exam_type->value,
                     'duration_minutes' => $exam->duration_minutes + $eligibility->extraMinutes($exam, $student),
                     'opens_at' => $exam->opens_at?->toDayDateTimeString(),
                     'closes_at' => $exam->closes_at?->toDayDateTimeString(),

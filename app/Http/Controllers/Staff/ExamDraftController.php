@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Enums\ExamStatus;
+use App\Enums\ExamType;
+use App\Enums\ScoreReleasePolicy;
+use App\Enums\SlotType;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\ExamDraftSlot;
@@ -33,7 +36,7 @@ class ExamDraftController extends Controller
                 'id' => $exam->id,
                 'title' => $exam->title,
                 'status' => $exam->status->value,
-                'exam_type' => $exam->exam_type,
+                'exam_type' => $exam->exam_type->value,
                 'subject' => $exam->subject?->name,
                 'term' => $exam->term ? $exam->term->academicSession?->name.' - '.$exam->term->name : null,
                 'duration_minutes' => $exam->duration_minutes,
@@ -164,7 +167,7 @@ class ExamDraftController extends Controller
             'instructions' => ['nullable', 'string'],
             'subject_id' => ['required', 'integer', Rule::exists('subjects', 'id')],
             'term_id' => ['nullable', 'integer', Rule::exists('terms', 'id')],
-            'exam_type' => ['required', Rule::in(['ca', 'exam', 'practice'])],
+            'exam_type' => ['required', Rule::enum(ExamType::class)],
             'duration_minutes' => ['required', 'integer', 'min:1', 'max:600'],
             'total_marks' => ['required', 'numeric', 'min:0.01', 'max:999999'],
             'pass_percentage' => ['required', 'numeric', 'min:0', 'max:100'],
@@ -173,7 +176,7 @@ class ExamDraftController extends Controller
             'closes_at' => ['nullable', 'date', 'after:opens_at'],
             'shuffle_questions' => ['boolean'],
             'shuffle_options' => ['boolean'],
-            'score_release_policy' => ['required', Rule::in(['immediate', 'after_close', 'manual', 'scheduled'])],
+            'score_release_policy' => ['required', Rule::enum(ScoreReleasePolicy::class)],
             'score_release_at' => ['nullable', 'date', Rule::requiredIf($request->input('score_release_policy') === 'scheduled')],
             'show_responses' => ['boolean'],
             'show_correct_answers' => ['boolean'],
@@ -231,7 +234,7 @@ class ExamDraftController extends Controller
 
             ExamDraftSlot::query()->create([
                 'exam_id' => $exam->id,
-                'slot_type' => 'fixed_question',
+                'slot_type' => SlotType::FixedQuestion,
                 'question_version_id' => $question->id,
                 'question_count' => 1,
                 'marks_per_question' => $slot['marks_per_question'],
@@ -286,7 +289,7 @@ class ExamDraftController extends Controller
             'instructions' => $exam->instructions,
             'subject_id' => $exam->subject_id,
             'term_id' => $exam->term_id,
-            'exam_type' => $exam->exam_type,
+            'exam_type' => $exam->exam_type->value,
             'status' => $exam->status->value,
             'duration_minutes' => $exam->duration_minutes,
             'total_marks' => $exam->total_marks,
@@ -296,7 +299,7 @@ class ExamDraftController extends Controller
             'closes_at' => $this->dateTimeValue($exam->closes_at),
             'shuffle_questions' => $exam->shuffle_questions,
             'shuffle_options' => $exam->shuffle_options,
-            'score_release_policy' => $exam->score_release_policy,
+            'score_release_policy' => $exam->score_release_policy->value,
             'score_release_at' => $this->dateTimeValue($exam->score_release_at),
             'show_responses' => $exam->show_responses,
             'show_correct_answers' => $exam->show_correct_answers,
@@ -336,11 +339,11 @@ class ExamDraftController extends Controller
                     'subject' => $question->entry?->subject?->name,
                     'class_level' => $question->entry?->classLevel?->name,
                     'type' => $question->type->value,
-                    'difficulty' => $question->difficulty,
+                    'difficulty' => $question->difficulty?->value,
                     'default_marks' => $question->default_marks,
                 ]),
-            'exam_types' => ['ca', 'exam', 'practice'],
-            'release_policies' => ['manual', 'immediate', 'after_close', 'scheduled'],
+            'exam_types' => collect(ExamType::cases())->map(fn (ExamType $type): string => $type->value)->all(),
+            'release_policies' => collect(ScoreReleasePolicy::cases())->map(fn (ScoreReleasePolicy $policy): string => $policy->value)->all(),
         ];
     }
 

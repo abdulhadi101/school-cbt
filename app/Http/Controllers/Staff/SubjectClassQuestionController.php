@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\Enums\Difficulty;
 use App\Http\Controllers\Controller;
 use App\Models\ClassLevel;
 use App\Models\QuestionBankEntry;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,14 +35,14 @@ class SubjectClassQuestionController extends Controller
             ->through(fn (QuestionBankEntry $entry): array => [
                 'id' => $entry->id,
                 'title' => $entry->title,
-                'status' => $entry->status,
+                'status' => $entry->status->value,
                 'category' => $entry->category?->name,
                 'tags' => $entry->tags->pluck('name')->values(),
                 'latest_version' => $entry->latestVersion ? [
                     'id' => $entry->latestVersion->id,
                     'version_number' => $entry->latestVersion->version_number,
                     'type' => $entry->latestVersion->type->value,
-                    'difficulty' => $entry->latestVersion->difficulty,
+                    'difficulty' => $entry->latestVersion->difficulty?->value,
                     'default_marks' => $entry->latestVersion->default_marks,
                     'question_text' => Str::limit(strip_tags($entry->latestVersion->question_text), 140),
                 ] : null,
@@ -103,7 +105,7 @@ class SubjectClassQuestionController extends Controller
         $request->validate([
             'format' => ['required', 'in:aiken,gift,xml'],
             'default_marks' => ['required', 'numeric', 'min:0.01', 'max:999999'],
-            'difficulty' => ['nullable', 'in:easy,medium,hard'],
+            'difficulty' => ['nullable', Rule::enum(Difficulty::class)],
             'tags' => ['nullable', 'string', 'max:500'],
         ]);
 

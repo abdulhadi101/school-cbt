@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\QuestionStatus;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class QuestionBankEntry extends Model
 {
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'status' => QuestionStatus::class,
+        ];
+    }
 
     public function category(): BelongsTo
     {

@@ -17,10 +17,12 @@ use App\Models\Role;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
+use App\Services\Attempts\AttemptExpirer;
 use App\Services\Attempts\AttemptStarter;
 use App\Services\Attempts\AttemptSubmitter;
 use App\Services\Exams\ExamRevisionPublisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use RuntimeException;
 use Tests\TestCase;
 
 class InvigilationActionsTest extends TestCase
@@ -161,6 +163,90 @@ class InvigilationActionsTest extends TestCase
         $this->actingAs($this->userWithPermissions(['attempts.invigilate']))
             ->post(route('staff.attempts.invalidate', $attempt), ['reason' => 'x'])
             ->assertForbidden();
+    }
+
+    public function test_board_flags_idle_attempts_and_action_availability(): void
+    {
+        $publisher = User::factory()->create();
+        $exam = $this->publishedExam($publisher);
+        $student = $this->student('STD-408');
+        $attempt = app(AttemptStarter::class)->startOrResume($exam->fresh(), $student);
+        $attempt->forceFill(['last_seen_at' => now()->subMinutes(10)])->save();
+
+        $this->actingAs($this->userWithPermissions(['attempts.invigilate']))
+            ->get(route('staff.exams.invigilation', $exam))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Staff/Invigilation/Show')
+                ->where('dashboard.attempts.0.is_idle', true)
+                ->where('dashboard.attempts.0.can_extend', true)
+                ->where('dashboard.attempts.0.can_reopen', false)
+                ->where('dashboard.attempts.0.can_invalidate', true)
+            );
+    }
+
+    public function test_extend_uses_now_when_deadline_already_passed(): void
+    {
+        $publisher = User::factory()->create();
+        $exam = $this->publishedExam($publisher);
+        $attempt = app(AttemptStarter::class)->startOrResume($exam->fresh(), $this->student('STD-409'));
+        $attempt->forceFill(['deadline_at' => now()->subMinutes(5)])->save();
+
+        $this->actingAs($this->userWithPermissions(['attempts.invigilate', 'attempts.reopen']))
+            ->post(route('staff.attempts.extend', $attempt), [
+                'extra_minutes' => 10,
+                'reason' => 'Late start, clock already ran out.',
+            ])->assertRedirect();
+
+        $deadline = $attempt->fresh()->deadline_at;
+        $this->assertTrue($deadline->isFuture());
+        $this->assertTrue($deadline->lessThanOrEqualTo(now()->addMinutes(11)));
+    }
+
+    public function test_invigilator_can_reopen_expired_attempt(): void
+    {
+        $publisher = User::factory()->create();
+        $exam = $this->publishedExam($publisher);
+        $attempt = app(AttemptStarter::class)->startOrResume($exam->fresh(), $this->student('STD-410'));
+        $attempt->forceFill(['deadline_at' => now()->subMinute()])->save();
+        app(AttemptExpirer::class)->expireDue();
+        $this->assertSame(AttemptStatus::Expired, $attempt->fresh()->status);
+
+        $this->actingAs($this->userWithPermissions(['attempts.invigilate', 'attempts.reopen']))
+            ->post(route('staff.attempts.reopen', $attempt), ['reason' => 'Hall power cut.'])
+            ->assertRedirect();
+
+        $this->assertSame(AttemptStatus::InProgress, $attempt->fresh()->status);
+    }
+
+    public function test_invalidated_attempt_blocks_new_start_at_max_attempts(): void
+    {
+        $publisher = User::factory()->create();
+        $exam = $this->publishedExam($publisher);
+        $student = $this->student('STD-411');
+        $attempt = app(AttemptStarter::class)->startOrResume($exam->fresh(), $student);
+
+        $this->actingAs($this->userWithPermissions(['attempts.invigilate', 'attempts.invalidate']))
+            ->post(route('staff.attempts.invalidate', $attempt), ['reason' => 'Malpractice.'])
+            ->assertRedirect();
+
+        $this->expectException(RuntimeException::class);
+        app(AttemptStarter::class)->startOrResume($exam->fresh(), $student);
+    }
+
+    public function test_hall_includes_closed_window_exam_with_live_attempt(): void
+    {
+        $publisher = User::factory()->create();
+        $exam = $this->publishedExam($publisher, ['title' => 'Closing CA', 'opens_at' => now()->subHour(), 'closes_at' => now()->addHour()]);
+        app(AttemptStarter::class)->startOrResume($exam->fresh(), $this->student('STD-412'));
+        $exam->forceFill(['closes_at' => now()->subMinute()])->save();
+
+        $response = $this->actingAs($this->userWithPermissions(['attempts.invigilate']))
+            ->get(route('staff.invigilation.index'));
+
+        $response->assertOk();
+        $titles = collect($response->viewData('page')['props']['exams'])->pluck('title')->all();
+        $this->assertContains('Closing CA', $titles);
     }
 
     private function publishedExam(User $publisher, array $overrides = []): Exam

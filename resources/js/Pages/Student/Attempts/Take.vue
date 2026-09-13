@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
 import { Head, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -116,7 +117,7 @@ function submitAttempt() {
                 <div class="mb-4 flex items-start justify-between gap-4">
                     <div>
                         <p class="text-sm font-semibold text-slate-500">Question {{ currentQuestion.position }}</p>
-                        <h2 class="mt-2 text-xl font-semibold" v-html="currentQuestion.question_text" />
+                        <MathContent :content="currentQuestion.question_text" class="mt-2 block text-xl font-semibold" />
                     </div>
                     <span class="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium">{{ currentQuestion.marks }} marks</span>
                 </div>
@@ -130,7 +131,7 @@ function submitAttempt() {
                         :class="responses[currentQuestion.attempt_question_id]?.selected_option_id === option.id ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:bg-slate-50'"
                         @click="selectOption(currentQuestion, option.id)"
                     >
-                        {{ option.option_text }}
+                        <MathContent :content="option.option_text" class="block" />
                     </button>
                 </div>
 

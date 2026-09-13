@@ -89,6 +89,86 @@ class SubjectQuestionImportTest extends TestCase
         $this->assertSame(0, QuestionBankEntry::query()->count());
     }
 
+    public function test_preview_shows_valid_questions_and_errors_without_saving(): void
+    {
+        [$subject, $level] = $this->catalog();
+        $staff = $this->assignedStaff($subject, $level);
+
+        $content = "Q1. What is 2 + 2?\nA. 3\nB. 4\nANSWER: B\n\nBroken block without answer\nA. x\nB. y";
+
+        $this->actingAs($staff)->post(route('staff.subject-questions.preview', [$subject, $level]), [
+            'format' => 'aiken',
+            'content' => $content,
+            'default_marks' => 1,
+            'difficulty' => 'medium',
+            'tags' => '',
+        ])->assertOk()->assertInertia(fn ($page) => $page
+            ->component('Staff/SubjectQuestions/Import')
+            ->where('preview.questions.0.question_text', 'What is 2 + 2?')
+            ->where('preview.questions.0.type', 'single_choice')
+            ->where('preview.errors.0.block', 2)
+        );
+
+        $this->assertSame(0, QuestionBankEntry::query()->count());
+    }
+
+    public function test_gift_import_creates_multiple_choice_with_split_fractions(): void
+    {
+        [$subject, $level] = $this->catalog();
+        $staff = $this->assignedStaff($subject, $level);
+
+        $content = "Which are even numbers? {\n= 2\n= 4\n~ 3\n}";
+
+        $this->actingAs($staff)->post(route('staff.subject-questions.store', [$subject, $level]), [
+            'format' => 'gift',
+            'content' => $content,
+            'default_marks' => 1,
+        ])->assertRedirect();
+
+        $entry = QuestionBankEntry::query()->with('latestVersion.options')->sole();
+
+        $this->assertSame('multiple_choice', $entry->latestVersion->type->value);
+        $this->assertSame(['0.5000', '0.5000', '0.0000'], $entry->latestVersion->options->sortBy('position')->pluck('fraction')->all());
+    }
+
+    public function test_import_preserves_latex_verbatim(): void
+    {
+        [$subject, $level] = $this->catalog();
+        $staff = $this->assignedStaff($subject, $level);
+
+        $content = "Q1. Solve \\(x^2 = 4\\) for x.\nA. \\(x = 2\\)\nB. \\(x = -2\\)\nC. \\(x = \\pm 2\\)\nD. \\(x = 0\\)\nANSWER: C";
+
+        $this->actingAs($staff)->post(route('staff.subject-questions.store', [$subject, $level]), [
+            'format' => 'aiken',
+            'content' => $content,
+            'default_marks' => 1,
+        ])->assertRedirect();
+
+        $entry = QuestionBankEntry::query()->with('latestVersion.options')->sole();
+
+        $this->assertSame('Solve \\(x^2 = 4\\) for x.', $entry->latestVersion->question_text);
+        $this->assertSame('\\(x = \\pm 2\\)', $entry->latestVersion->options->firstWhere('fraction', '1.0000')->option_text);
+    }
+
+    public function test_gift_numerical_import_stores_grading_rules(): void
+    {
+        [$subject, $level] = $this->catalog();
+        $staff = $this->assignedStaff($subject, $level);
+
+        $this->actingAs($staff)->post(route('staff.subject-questions.store', [$subject, $level]), [
+            'format' => 'gift',
+            'content' => 'What is pi? {#3.14:0.01}',
+            'default_marks' => 1,
+        ])->assertRedirect();
+
+        $entry = QuestionBankEntry::query()->with('latestVersion')->sole();
+
+        $this->assertSame('numerical', $entry->latestVersion->type->value);
+        $this->assertSame(3.14, $entry->latestVersion->grading_rules['answer']);
+        $this->assertSame(0.01, $entry->latestVersion->grading_rules['tolerance']);
+        $this->assertSame(0, $entry->latestVersion->options()->count());
+    }
+
     /**
      * @return array{0: Subject, 1: ClassLevel}
      */

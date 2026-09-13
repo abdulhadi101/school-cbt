@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('class_level_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->enum('status', ['draft', 'ready', 'retired'])->default('draft')->index();
+            $table->string('status', 30)->default('draft')->index();
             $table->string('title')->nullable();
             $table->timestamps();
         });
@@ -40,8 +40,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('question_bank_entry_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('version_number');
-            $table->enum('type', ['single_choice', 'multiple_choice', 'true_false', 'short_answer', 'numerical', 'fill_blank', 'essay'])->index();
-            $table->enum('difficulty', ['easy', 'medium', 'hard'])->nullable()->index();
+            $table->string('type', 30)->index();
+            $table->string('difficulty', 20)->nullable()->index();
             $table->longText('question_text');
             $table->string('image_path')->nullable();
             $table->decimal('default_marks', 8, 2)->default(1);

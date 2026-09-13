@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MathContent from '@/Components/MathContent.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -74,7 +75,7 @@ import { computed } from 'vue';
                             <div class="mb-4 flex items-start justify-between gap-4">
                                 <div>
                                     <p class="text-sm font-semibold text-slate-500">Question {{ currentQuestion.position }} of {{ questions.length }}</p>
-                                    <h3 class="mt-2 text-lg font-semibold text-gray-900" v-html="currentQuestion.question_text" />
+                                    <MathContent :content="currentQuestion.question_text" class="mt-2 block text-lg font-semibold text-gray-900" />
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">{{ currentQuestion.marks }} marks</span>
@@ -106,7 +107,7 @@ import { computed } from 'vue';
 
                             <div v-if="currentQuestion.explanation" class="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">
                                 <p class="font-semibold">Explanation</p>
-                                <p class="mt-1">{{ currentQuestion.explanation }}</p>
+                                <MathContent :content="currentQuestion.explanation" class="mt-1 block" />
                             </div>
                         </div>
 
